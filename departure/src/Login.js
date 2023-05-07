@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -21,10 +21,17 @@ function Login() {
     Validate(email, password);
   }
 
+  const navigate = useNavigate();
+
+  const forwardRouting = () => {
+    navigate('/homePage');
+  };
+
   const Validate = (email, password) => {
     axios.post('http://localhost:4242/api/login', { email, password })
       .then(response => {
         sessionStorage.setItem('token', response.data.token);
+        forwardRouting();
       }) 
       .catch(error => {
         throw new Error(error.response.data.message);

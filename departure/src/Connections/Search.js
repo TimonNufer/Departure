@@ -125,7 +125,7 @@ const Search = () => {
           to={to}
           onComplete={() => setShowComponent(false) && setFrom("") && setTo("")}
         />
-) : null}
+      ) : null}
       <ul>
         {connections.map((connection) => (
           <li key={connection.id}>

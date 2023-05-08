@@ -57,14 +57,17 @@ const SaveConnection = ({ from, to, onComplete }) => {
     }
   }, [from, to]);
 
+  useEffect(() => {
+    if (existingConnection || successMessage) {
+      onComplete();
+    }
+  }, [existingConnection, successMessage, onComplete]);
+
   if (existingConnection) {
-    onComplete();
     return <div>Connection already exists.</div>;
   } else if (successMessage) {
-    onComplete();
     return <div>{successMessage}</div>;
   } else {
-    onComplete();
     return <div></div>;
   }
 };

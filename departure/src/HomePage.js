@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Search  from './Connections/Search'
+import Favorites from './Connections/Favorites'
 
 function Home() {
   const token = sessionStorage.getItem('token');
@@ -29,6 +30,7 @@ function Home() {
             <h1>Home Component</h1>
 
             <Search />
+            <Favorites />
 
             <button onClick={logout}>Logout</button>
         </>

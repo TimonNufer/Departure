@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import moment from 'moment';
 import './Favorites.css';
+import './Favorites.css';
 
 function ConnectionsMenu() {
   const { t } = useTranslation();

@@ -9,6 +9,7 @@ const Search = () => {
   const [connections, setConnections] = useState([]);
   const [fromLocationPreviews, setFromLocationPreviews] = useState([]);
   const [toLocationPreviews, setToLocationPreviews] = useState([]);
+  const [showComponent, setShowComponent] = useState(false);
 
   // Fetch connections when 'from' or 'to' values change
   useEffect(() => {
@@ -64,8 +65,8 @@ const Search = () => {
   };
 
   const saveConnection = () => {
-    <SaveConnection from={from} to={to} />
-  }
+    setShowComponent(true);
+  };
 
   return (
     <div>
@@ -82,7 +83,7 @@ const Search = () => {
         <ul className="location-previews">
           {fromLocationPreviews.map((location) => (
             <li
-              key={location.id}
+              key={location.id} // Assign a unique key prop to each list item
               onClick={() => handleLocationClick(location, 'from')}
             >
               {location.name}
@@ -104,7 +105,7 @@ const Search = () => {
         <ul className="location-previews">
           {toLocationPreviews.map((location) => (
             <li
-              key={location.id}
+              key={location.id} // Assign a unique key prop to each list item
               onClick={() => handleLocationClick(location, 'to')}
             >
               {location.name}
@@ -118,6 +119,13 @@ const Search = () => {
       <Button onClick={saveConnection} variant="primary" type="submit">
         Save Connection
       </Button>
+      {showComponent ? (
+        <SaveConnection
+          from={from}
+          to={to}
+          onComplete={() => setShowComponent(false) && setFrom("") && setTo("")}
+        />
+) : null}
       <ul>
         {connections.map((connection) => (
           <li key={connection.id}>

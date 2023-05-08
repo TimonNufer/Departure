@@ -1,4 +1,3 @@
-/* eslint-disable prefer-destructuring */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useEffect } from 'react';
@@ -15,7 +14,6 @@ function Search() {
   const [fromLocationPreviews, setFromLocationPreviews] = useState([]);
   const [toLocationPreviews, setToLocationPreviews] = useState([]);
   const [showComponent, setShowComponent] = useState(false);
-
   // Fetch connections when 'from' or 'to' values change
   useEffect(() => {
     const fetchConnections = async () => {
@@ -29,10 +27,30 @@ function Search() {
         console.error('Error fetching connections:', error);
       }
     };
-
     fetchConnections();
   }, [from, to]);
-
+  // Fetch location previews based on query
+  const getLocationPreviews = async (query, setLocationPreviews) => {
+    try {
+      const response = await fetch(`http://transport.opendata.ch/v1/locations?query=${query}`);
+      const data = await response.json();
+      setLocationPreviews(data.stations);
+    } catch (error) {
+      console.error('Error fetching location previews:', error);
+    }
+  };
+  // Event handler for 'from' input change
+  const handleFromChange = (e) => {
+    const { value } = e.target;
+    setFrom(value);
+    getLocationPreviews(value, setFromLocationPreviews);
+  };
+  // Event handler for 'to' input change
+  const handleToChange = (e) => {
+    const { value } = e.target;
+    setTo(value);
+    getLocationPreviews(value, setToLocationPreviews);
+  };
   // Handle location selection from previews
   const handleLocationClick = (location, inputField) => {
     if (inputField === 'from') {
@@ -43,38 +61,9 @@ function Search() {
       setToLocationPreviews([]);
     }
   };
-
-  // Fetch location previews based on query
-  const getLocationPreviews = async (query, setLocationPreviews) => {
-    try {
-      const response = await fetch(
-        `http://transport.opendata.ch/v1/locations?query=${query}`,
-      );
-      const data = await response.json();
-      setLocationPreviews(data.stations);
-    } catch (error) {
-      console.error('Error fetching location previews:', error);
-    }
-  };
-
-  // Event handler for 'from' input change
-  const handleFromChange = (e) => {
-    const value = e.target.value;
-    setFrom(value);
-    getLocationPreviews(value, setFromLocationPreviews);
-  };
-
-  // Event handler for 'to' input change
-  const handleToChange = (e) => {
-    const value = e.target.value;
-    setTo(value);
-    getLocationPreviews(value, setToLocationPreviews);
-  };
-
   const saveConnection = () => {
     setShowComponent(true);
   };
-
   return (
     <div className="connections-Page">
       <div className="search-box">
@@ -88,7 +77,6 @@ function Search() {
             placeholder={t('from')}
             autoComplete="off"
           />
-
           {/* 'To' input field */}
           <input
             className="to"
@@ -98,61 +86,71 @@ function Search() {
             placeholder={t('to')}
             autoComplete="off"
           />
-
-          {/* Display location previews for 'from' */}
-          {fromLocationPreviews.length > 0 && (
-          <ul className="location-previews-from">
-            {fromLocationPreviews.map((location) => (
-              <li
-                key={location.id} // Assign a unique key prop to each list item
-                onClick={() => handleLocationClick(location, 'from')}
-              >
-                {location.name}
-              </li>
-            ))}
-          </ul>
-          )}
-
-          {/* Display location previews for 'to' */}
-          {toLocationPreviews.length > 0 && (
-          <ul className="location-previews-to">
-            {toLocationPreviews.map((location) => (
-              <li
-                key={location.id} // Assign a unique key prop to each list item
-                onClick={() => handleLocationClick(location, 'to')}
-              >
-                {location.name}
-              </li>
-            ))}
-          </ul>
-          )}
-
           {/* Display connections */}
-          <Button className="safe-button" onClick={saveConnection} variant="primary" type="submit">
+          <Button
+            className="safe-button"
+            onClick={saveConnection}
+            variant="primary"
+            type="submit"
+          >
             {t('saveConnection')}
           </Button>
-
           <h3 className="connections-text">{t('connections')}</h3>
-
+          {/* Display location previews for 'from' */}
+          {fromLocationPreviews.length > 0 && (
+            <ul className="location-previews-from">
+              {fromLocationPreviews.map((location) => (
+                <li
+                  key={location.id} // Assign a unique key prop to each list item
+                  onClick={() => handleLocationClick(location, 'from')}
+                >
+                  {location.name}
+                </li>
+              ))}
+            </ul>
+          )}
+          {/* Display location previews for 'to' */}
+          {toLocationPreviews.length > 0 && (
+            <ul className="location-previews-to">
+              {toLocationPreviews.map((location) => (
+                <li
+                  key={location.id} // Assign a unique key prop to each list item
+                  onClick={() => handleLocationClick(location, 'to')}
+                >
+                  {location.name}
+                </li>
+              ))}
+            </ul>
+          )}
           {showComponent ? (
             <SaveConnection
               from={from}
               to={to}
-              onComplete={() => setShowComponent(false) && setFrom('') && setTo('') && window.location.reload()}
+              onComplete={() => {
+                setShowComponent(false);
+                setFrom('');
+                setTo('');
+                window.location.reload();
+              }}
             />
           ) : null}
-          <ul className="connections-box">
-            {connections.map((connection) => (
-              <div className="connections">
-                <li key={connection.id}>
-                  {connection.from.station.name}
-                  {' '}
-                  to
-                  {connection.to.station.name}
-                </li>
-              </div>
-            ))}
-          </ul>
+          {connections && connections.length > 0 ? (
+            <ul className="connections-box">
+              {connections.map((connection) => (
+                <div className="connections" key={connection.id}>
+                  <li>
+                    {connection.from.station.name}
+                    {' '}
+                    to
+                    {' '}
+                    {connection.to.station.name}
+                  </li>
+                </div>
+              ))}
+            </ul>
+          ) : (
+            <p>{t('noConnection')}</p>
+          )}
         </div>
       </div>
     </div>

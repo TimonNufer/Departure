@@ -8,5 +8,6 @@
     "saveConnection": "Verbindung Speichern",
     "connections": "Verbindungen:",
     "alreadyExists": "Die Verbindung existiert bereits!",
-    "favorites": "Favoriten"
+    "favorites": "Favoriten",
+    "noConnection": "Keine Verbindung gefunden"
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import moment from 'moment';
+import './Favorites.css';
 
 function ConnectionsMenu() {
   const { t } = useTranslation();
@@ -86,38 +87,38 @@ function ConnectionsMenu() {
   };
 
   return (
-    <div>
-      <p>{t('favorites')}</p>
+    <div className="connections-menu">
+      <p className="favorites-title">{t('favorites')}</p>
       {connections.map((connection) => (
-        <div key={`${connection.id}`}>
-          <div>
-            <button type="button" onClick={() => toggleExpand(connection)}>{`${connection.from} to ${connection.to}`}</button>
-            <button type="button" onClick={() => removeConnection(connection.id)}>X</button>
+        <div className="connection" key={`${connection.id}`}>
+          <div className="connection-header">
+            <button className="connection-toggle" type="button" onClick={() => toggleExpand(connection)}>{`${connection.from} to ${connection.to}`}</button>
+            <button className="connection-remove" type="button" onClick={() => removeConnection(connection.id)}>X</button>
           </div>
           {expandedConnection === connection && (
-            <div>
+            <div className="connection-details">
               {connection.connections.map((conn, index) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <div key={index}>
-                  <p>
+                <div className="connection-detail" key={index}>
+                  <p className="connection-departure">
                     Departure:
                     {' '}
                     {conn.departureTime}
-                    {conn.isNextDay && <span> (Next day)</span>}
+                    {conn.isNextDay && <span className="connection-next-day"> (Next day)</span>}
                   </p>
-                  <p>
+                  <p className="connection-arrival">
                     Arrival:
                     {' '}
                     {conn.arrivalTime}
                   </p>
-                  <p>
+                  <p className="connection-delay">
                     Delay:
                     {' '}
                     {conn.delay}
                     {' '}
                     minutes
                   </p>
-                  <p>
+                  <p className="connection-platform">
                     Platform:
                     {' '}
                     {conn.platform}

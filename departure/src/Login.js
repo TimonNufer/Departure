@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import "./Login.css";
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -39,14 +40,14 @@ function Login() {
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form className='Login' onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Email address</Form.Label>
+        <Form.Label className='email-text'>Email address</Form.Label>
         <Form.Control type="email" placeholder="Enter email" onChange={handleEmailChange} />
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Password</Form.Label>
+        <Form.Label className='pwd-text'>Password</Form.Label>
         <Form.Control type="password" placeholder="Password" onChange={handlePasswordChange} />
       </Form.Group>
 

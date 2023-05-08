@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Search  from './Connections/Search'
+import "./HomePage.css"
 
 function Home() {
   const token = sessionStorage.getItem('token');
@@ -26,11 +27,12 @@ function Home() {
   } else {
     return(
         <>
-            <h1>Home Component</h1>
 
+        <button className='logout-button' onClick={logout}>Logout</button>
+
+        <div className='search'>
             <Search />
-
-            <button onClick={logout}>Logout</button>
+            </div>
         </>
     );
   }

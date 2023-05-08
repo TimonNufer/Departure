@@ -68,15 +68,27 @@ const Search = () => {
   }
 
   return (
-    <div>
+    <div className='connections'>
+      <div className='connections-box'>
+        <div className='connections-ajustment' >
       {/* 'From' input field */}
-      <input
+      <input className='from'
         type="text"
         value={from}
         onChange={handleFromChange}
         placeholder="From"
         autoComplete="off"
       />
+
+      {/* 'To' input field */}
+      <input className='to'
+        type="text"
+        value={to}
+        onChange={handleToChange}
+        placeholder="To"
+        autoComplete="off"
+      />
+
       {/* Display location previews for 'from' */}
       {fromLocationPreviews.length > 0 && (
         <ul className="location-previews">
@@ -91,14 +103,6 @@ const Search = () => {
         </ul>
       )}
 
-      {/* 'To' input field */}
-      <input
-        type="text"
-        value={to}
-        onChange={handleToChange}
-        placeholder="To"
-        autoComplete="off"
-      />
       {/* Display location previews for 'to' */}
       {toLocationPreviews.length > 0 && (
         <ul className="location-previews">
@@ -114,8 +118,8 @@ const Search = () => {
       )}
 
       {/* Display connections */}
-      <h3>Connections:</h3>
-      <Button onClick={saveConnection} variant="primary" type="submit">
+      <h3 className='connections-text'>Connections:</h3>
+      <Button className='safe-button' onClick={saveConnection} variant="primary" type="submit">
         Save Connection
       </Button>
       <ul>
@@ -125,6 +129,8 @@ const Search = () => {
           </li>
         ))}
       </ul>
+        </div>
+      </div>
     </div>
   );
 };

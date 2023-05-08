@@ -1,0 +1,12 @@
+{
+    "mail": "Email Adresse",
+    "password": "Passwort",
+    "submit": "Bestätigen",
+    "logout": "Ausloggen",
+    "from": "Von",
+    "to": "Nach",
+    "saveConnection": "Verbindung Speichern",
+    "connections": "Verbindungen:",
+    "alreadyExists": "Die Verbindung existiert bereits!",
+    "favorites": "Favoriten"
+}

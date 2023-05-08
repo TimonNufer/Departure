@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Search from './Connections/Search';
-import "./HomePage.css";
+import './HomePage.css';
 import Favorites from './Connections/Favorites';
 import SaveConnection from './Connections/SaveConnections';
 
 function Home() {
+  const { t } = useTranslation();
   const token = sessionStorage.getItem('token');
   const [timestamp, setTimestamp] = useState(Date.now());
   const [reloadFavorites, setReloadFavorites] = useState(false);
@@ -26,7 +28,7 @@ function Home() {
     const interval = setInterval(() => {
       setTimestamp(Date.now());
       setReloadFavorites((prevReload) => !prevReload);
-    }, 30000);
+    }, 60000);
 
     return () => {
       clearInterval(interval);
@@ -44,19 +46,18 @@ function Home() {
 
   if (!token || token === null) {
     return null;
-  } else {
-    return (
-      <>
-        <button className='logout-button' onClick={logout}>Logout</button>
-        <div className='search'>
-          <Search />
-        </div>
-        <Favorites key={reloadFavorites ? 'reload' : 'no-reload'} timestamp={timestamp} />
-        <SaveConnection onConnectionSaved={handleSaveConnection} />
-        {reloadPage && window.location.reload()}
-      </>
-    );
   }
+  return (
+    <>
+      <button type="button" className="logout-button" onClick={logout}>{t('logout')}</button>
+      <div className="search">
+        <Search />
+      </div>
+      <Favorites key={reloadFavorites ? 'reload' : 'no-reload'} timestamp={timestamp} />
+      <SaveConnection onConnectionSaved={handleSaveConnection} />
+      {reloadPage && window.location.reload()}
+    </>
+  );
 }
 
 export default Home;

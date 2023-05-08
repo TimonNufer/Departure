@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Search  from './Connections/Search'
+import "./HomePage.css"
 import Favorites from './Connections/Favorites'
 
 function Home() {
@@ -27,12 +28,13 @@ function Home() {
   } else {
     return(
         <>
-            <h1>Home Component</h1>
 
+        <button className='logout-button' onClick={logout}>Logout</button>
+
+        <div className='search'>
             <Search />
             <Favorites />
-
-            <button onClick={logout}>Logout</button>
+            </div>
         </>
     );
   }

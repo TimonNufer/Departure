@@ -1,59 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const SaveConnection = ({ from, to }) => {
-  const [connectionFrom, setConnectionFrom] = useState(from);
-  const [connectionTo, setConnectionTo] = useState(to);
+const SaveConnection = ({ from, to, onComplete }) => {
+  const [existingConnection, setExistingConnection] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    debugger;
-    try {
+  useEffect(() => {
+    const checkConnectionExistence = async () => {
+      try {
         const token = sessionStorage.getItem('token');
 
+        // Get all existing connections
         const response = await fetch('http://localhost:4242/api/connections', {
-          method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
             'x-access-token': token,
           },
-          body: JSON.stringify({ from: connectionFrom, to: connectionTo }),
         });
 
-      if (response.ok) {
-        // Handle successful response
-        console.log('Connection created successfully!');
-      } else {
-        // Handle error response
-        console.error('Failed to create connection.');
-      }
-    } catch (error) {
-      console.error('Error creating connection:', error);
-    }
-  };
+        if (response.ok) {
+          const connections = await response.json();
+          const connectionExists = connections.some(
+            (connection) =>
+              connection.from === from && connection.to === to
+          );
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        From:
-        <input
-          type="text"
-          value={connectionFrom}
-          onChange={(e) => setConnectionFrom(e.target.value)}
-        />
-      </label>
-      <br />
-      <label>
-        To:
-        <input
-          type="text"
-          value={connectionTo}
-          onChange={(e) => setConnectionTo(e.target.value)}
-        />
-      </label>
-      <br />
-      <button type="submit">Create Connection</button>
-    </form>
-  );
+          if (connectionExists) {
+            setExistingConnection(true);
+          } else {
+            // Create the connection if it doesn't already exist
+            const createResponse = await fetch('http://localhost:4242/api/connections', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-access-token': token,
+              },
+              body: JSON.stringify({ from: from, to: to }),
+            });
+
+            if (createResponse.ok) {
+              setSuccessMessage('Connection created successfully!');
+            } else {
+              console.error('Failed to create connection.');
+              return;
+            }
+          }
+        } else {
+          console.error('Failed to fetch connections.');
+          return;
+        }
+      } catch (error) {
+        console.error('Error checking connection existence:', error);
+      }
+    };
+
+    if (from && to) {
+      checkConnectionExistence();
+    }
+  }, [from, to]);
+
+  if (existingConnection) {
+    onComplete();
+    return <div>Connection already exists.</div>;
+  } else if (successMessage) {
+    onComplete();
+    return <div>{successMessage}</div>;
+  } else {
+    onComplete();
+    return <div></div>;
+  }
 };
 
 export default SaveConnection;

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
-const SaveConnection = ({ from, to, onComplete }) => {
+// eslint-disable-next-line react/prop-types
+function SaveConnection({ from, to, onComplete }) {
+  const { t } = useTranslation();
   const [existingConnection, setExistingConnection] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -19,8 +22,7 @@ const SaveConnection = ({ from, to, onComplete }) => {
         if (response.ok) {
           const connections = await response.json();
           const connectionExists = connections.some(
-            (connection) =>
-              connection.from === from && connection.to === to
+            (connection) => connection.from === from && connection.to === to,
           );
 
           if (connectionExists) {
@@ -33,7 +35,7 @@ const SaveConnection = ({ from, to, onComplete }) => {
                 'Content-Type': 'application/json',
                 'x-access-token': token,
               },
-              body: JSON.stringify({ from: from, to: to }),
+              body: JSON.stringify({ from, to }),
             });
 
             if (createResponse.ok) {
@@ -64,12 +66,11 @@ const SaveConnection = ({ from, to, onComplete }) => {
   }, [existingConnection, successMessage, onComplete]);
 
   if (existingConnection) {
-    return <div>Connection already exists.</div>;
-  } else if (successMessage) {
+    return <div>{t('alreadyExists')}</div>;
+  } if (successMessage) {
     return <div>{successMessage}</div>;
-  } else {
-    return <div></div>;
   }
-};
+  return <div />;
+}
 
 export default SaveConnection;

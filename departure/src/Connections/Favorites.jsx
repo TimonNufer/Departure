@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import moment from 'moment';
 import './Favorites.css';
 
-const ConnectionsMenu = () => {
+function ConnectionsMenu() {
+  const { t } = useTranslation();
   const [connections, setConnections] = useState([]);
   const [expandedConnection, setExpandedConnection] = useState(null);
 
@@ -24,8 +26,8 @@ const ConnectionsMenu = () => {
             const { from, to } = connection;
             const transportResponse = await axios.get(
               `http://transport.opendata.ch/v1/connections?from=${encodeURIComponent(
-                from
-              )}&to=${encodeURIComponent(to)}`
+                from,
+              )}&to=${encodeURIComponent(to)}`,
             );
 
             const transportConnections = transportResponse.data.connections.slice(0, 5);
@@ -33,16 +35,20 @@ const ConnectionsMenu = () => {
               const departureTime = moment.unix(conn.from.departureTimestamp).format('HH:mm');
               const arrivalTime = moment.unix(conn.to.arrivalTimestamp).format('HH:mm');
               const delay = conn.to.delay / 60; // Convert delay to minutes
-              const platform = conn.to.platform;
+              const { platform } = conn.to;
 
               // Check if the connection spans to the next day
               const isNextDay = moment.unix(conn.from.departureTimestamp).isAfter(moment.unix(conn.to.arrivalTimestamp), 'day');
 
-              return { departureTime, arrivalTime, delay, platform, isNextDay };
+              return {
+                departureTime, arrivalTime, delay, platform, isNextDay,
+              };
             });
 
-            return { id: connection.id, from, to, connections: formattedConnections };
-          })
+            return {
+              id: connection.id, from, to, connections: formattedConnections,
+            };
+          }),
         );
 
         setConnections(updatedConnections);
@@ -72,7 +78,9 @@ const ConnectionsMenu = () => {
         },
       });
 
-      setConnections((prevConnections) => prevConnections.filter((conn) => conn.id !== connectionId));
+      setConnections(
+        (prevConnections) => prevConnections.filter((conn) => conn.id !== connectionId),
+      );
     } catch (error) {
       console.error('Error removing connection:', error);
     }
@@ -80,22 +88,41 @@ const ConnectionsMenu = () => {
 
   return (
     <div className="connections-menu">
-    <p className="favorites-title">Favorites</p>
-    {connections.map((connection) => (
-      <div className="connection" key={`${connection.id}`}>
-        <div className="connection-header">
-          <button className="connection-toggle" onClick={() => toggleExpand(connection)}>{`${connection.from} to ${connection.to}`}</button>
-          <button className="connection-remove" onClick={() => removeConnection(connection.id)}>X</button>
-        </div>
-        {expandedConnection === connection && (
-          <div className="connection-details">
-            {connection.connections.map((conn, index) => (
-              <div className="connection-detail" key={index}>
-                <p className="connection-departure">Departure: {conn.departureTime}
-                  {conn.isNextDay && <span className="connection-next-day"> (Next day)</span>}</p>
-                <p className="connection-arrival">Arrival: {conn.arrivalTime}</p>
-                  <p className="connection-delay">Delay: {conn.delay} minutes</p>
-                  <p className="connection-platform">Platform: {conn.platform}</p>
+      <p className="favorites-title">{t('favorites')}</p>
+      {connections.map((connection) => (
+        <div className="connection" key={`${connection.id}`}>
+          <div className="connection-header">
+            <button className="connection-toggle" type="button" onClick={() => toggleExpand(connection)}>{`${connection.from} to ${connection.to}`}</button>
+            <button className="connection-remove" type="button" onClick={() => removeConnection(connection.id)}>X</button>
+          </div>
+          {expandedConnection === connection && (
+            <div className="connection-details">
+              {connection.connections.map((conn, index) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <div className="connection-detail" key={index}>
+                  <p className="connection-departure">
+                    Departure:
+                    {' '}
+                    {conn.departureTime}
+                    {conn.isNextDay && <span className="connection-next-day"> (Next day)</span>}
+                  </p>
+                  <p className="connection-arrival">
+                    Arrival:
+                    {' '}
+                    {conn.arrivalTime}
+                  </p>
+                  <p className="connection-delay">
+                    Delay:
+                    {' '}
+                    {conn.delay}
+                    {' '}
+                    minutes
+                  </p>
+                  <p className="connection-platform">
+                    Platform:
+                    {' '}
+                    {conn.platform}
+                  </p>
                 </div>
               ))}
             </div>
@@ -104,6 +131,6 @@ const ConnectionsMenu = () => {
       ))}
     </div>
   );
-};
+}
 
 export default ConnectionsMenu;

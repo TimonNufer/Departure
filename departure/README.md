@@ -73,6 +73,14 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 Um die app richtig angezeig zu bekommen muss man zuerst noch "npm install" in der konsole eingeben.
 
+### Wie Funktioniert die Seite
+
+Als erstes muss man sich mit der e-mail ... und dem Password ... einloggen. Danach kann man bei den Inputfeldern 
+die Abfahrts- und Ankunftsstation auswählen. Dann werden die Fahrten darunter angezeigt. Um genauere Infos zu den Fahrten 
+zu erhalten, kann man dann mit einem Button die Strecke speichern. Danach wird die Strecke mit den nächsten 4 Routen 
+bei den Favoriten angezeigt. Dort sieht man dan auch die Abfahrtszeit und weitere Infos zur Fahrt. 
+Die Strecke kann man dan auch wieder mit dem "X" and der Seite löschen.
+
 ### Ordnerstruktur
 
 Die Ordnerstruktur ist so organisiert, dass alles was etwas mit den connections zu tun hat im Ordner Connections ist.

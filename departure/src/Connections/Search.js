@@ -127,7 +127,7 @@ const Search = () => {
         <SaveConnection
           from={from}
           to={to}
-          onComplete={() => setShowComponent(false) && setFrom("") && setTo("")}
+          onComplete={() => setShowComponent(false) && setFrom("") && setTo("") && window.location.reload()}
         />
       ) : null}
       <ul>

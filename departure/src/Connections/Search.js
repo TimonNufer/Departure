@@ -69,9 +69,10 @@ const Search = () => {
   };
 
   return (
-    <div className='connections'>
-      <div className='connections-box'>
+    <div className='connections-Page'>
+      <div className='search-box'>
         <div className='connections-ajustment' >
+
       {/* 'From' input field */}
       <input className='from'
         type="text"
@@ -89,6 +90,13 @@ const Search = () => {
         placeholder="To"
         autoComplete="off"
       />
+
+      {/* Display connections */}
+      <Button className='safe-button' onClick={saveConnection} variant="primary" type="submit">
+        Save Connection
+      </Button>
+
+      <h3 className='connections-text'>Connections:</h3>
 
       {/* Display location previews for 'from' */}
       {fromLocationPreviews.length > 0 && (
@@ -118,11 +126,6 @@ const Search = () => {
         </ul>
       )}
 
-      {/* Display connections */}
-      <h3 className='connections-text'>Connections:</h3>
-      <Button className='safe-button' onClick={saveConnection} variant="primary" type="submit">
-        Save Connection
-      </Button>
       {showComponent ? (
         <SaveConnection
           from={from}
@@ -130,11 +133,13 @@ const Search = () => {
           onComplete={() => setShowComponent(false) && setFrom("") && setTo("")}
         />
       ) : null}
-      <ul>
+      <ul className='connections-box'>
         {connections.map((connection) => (
+          <div className='connections'>
           <li key={connection.id}>
             {connection.from.station.name} to {connection.to.station.name}
           </li>
+          </div>
         ))}
       </ul>
         </div>

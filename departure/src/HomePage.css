@@ -1,4 +1,4 @@
-.connections {
+.connections-Page {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -8,11 +8,9 @@
 }
 
 
-.connections-box {
-    border: solid 3px gray; 
-    border-radius: 5px;
+.search-box {
     width: 800px;
-    height: 320px;
+    height: auto;
 }
 
 .connections-ajustment {
@@ -24,19 +22,78 @@
     background-color: #fff;
 }
 
-.from {
+.input-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
 
+.from {
+    border-radius: 20px;
+    border: none;
+    padding: 15px 25px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    font-size: 1.2rem;
+    margin-left: -20rem;
+    margin-top: -12rem;
+    position: fixed;
 }
 
 .to {
-
+    border-radius: 20px;
+    border: none;
+    padding: 15px 25px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    font-size: 1.2rem;
+    margin-left: 20rem;
+    margin-top: -10rem;
+    margin-bottom: 2rem;
+    position: fixed;
 }
 
-.connections-text {
-    font-size: 2rem;
+.from:focus {
+    box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.5);
+}
+  
+
+.to:focus {
+    box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.5);
 }
 
 .safe-button {
+    position: fixed;
+}
+
+.connections-text {
+    position: fixed;
+    margin-top: 10rem;
+    font-size: 2rem;
+}
+
+.connections-box {
+    margin-top: 22rem;
+}
+
+.connections {
+    border: solid 2px gray;
+    width: flex;
+    min-width: 20rem;
+    height: 2rem;
+    text-decoration: none;
+    margin-left: -2rem;
+}
+
+.connections li {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    list-style: none;
+}
+
+.connections:hover {
+    background-color: gainsboro;
 }
 
 .logout-button {
@@ -56,4 +113,4 @@
 
 .logout-button:hover {
     background-color: #b30000;
-  }
+}

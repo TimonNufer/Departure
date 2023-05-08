@@ -69,24 +69,27 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
+### Starten
+
+Um die app richtig angezeig zu bekommen muss man zuerst noch "npm install" in der konsole eingeben.
 
 ### Ordnerstruktur
 
 Die Ordnerstruktur ist so organisiert, dass alles was etwas mit den connections zu tun hat im Ordner Connections ist.
 Dort ist zum Beispiel die ganze search Funktion.
 
-Dann gibt es noch für die Login- und HomePage jeweils ein ein jsx und ein css file. 
+Dann gibt es noch für die Login- und HomePage jeweils ein jsx und ein css file. 
 Der css code zu dem search file befinden sich ebenfalls in dem HomePage css file.
 Zudem existier noch ein index.js file.
 
 ### Funktionen der components
 
-Der Login Component regelt das ganz Login mit der Validierung. Das Login css file ist zuständig für das ganze design der Login Page. Der Index Component dient als start component. Der HomePage component beinhaltet der Hauptteil der Seite. In der HomePage kommt alles zusammen. Der meiste Teil des Designs der HomePage ist im HomePage.css file.
+Der Login Component regelt das ganze Login mit der Validierung. Das Login css file ist zuständig für das ganze design der Login Page. Der Index Component dient als start component. Der HomePage component beinhaltet den Hauptteil der Seite. In der HomePage kommt alles zusammen. Der meiste Teil des Designs der HomePage ist im HomePage.css file.
 
 Der Search Component beinhaltet die ganze Logik die es braucht, damit man die Stationen suchen kann.
 Das Design hierzu befindet sich ebenfals in der HomePage.css datei. 
 
-Der SaveConnection Component beinhaltet das speicher der Stationen, die man Auswählt.
+Der SaveConnection Component beinhaltet das speichern der Stationen, die man Auswählt.
 
 Die Favoriten Funktioen hat ein Favoriten.jsx file, in dem die ganze Logik ist zum abspeicher und anzeigen der 
-ausgewählten Favoriten. Das ganze Design zu diesem Componetn ist nicht im HomePage.css file sonder in einem seperaten Favorites.css file. 
+ausgewählten Favoriten. Das ganze Design zu diesem Componetn ist nicht im HomePage.css file sondern in einem seperaten Favorites.css file. 

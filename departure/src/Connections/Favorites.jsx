@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import moment from 'moment';
+import './Favorites.css';
 
 const ConnectionsMenu = () => {
   const [connections, setConnections] = useState([]);
@@ -78,25 +79,23 @@ const ConnectionsMenu = () => {
   };
 
   return (
-    <div>
-      <p>Favoriten</p>
-      {connections.map((connection) => (
-        <div key={`${connection.id}`}>
-          <div>
-            <button onClick={() => toggleExpand(connection)}>{`${connection.from} to ${connection.to}`}</button>
-            <button onClick={() => removeConnection(connection.id)}>X</button>
-          </div>
-          {expandedConnection === connection && (
-            <div>
-              {connection.connections.map((conn, index) => (
-                <div key={index}>
-                  <p>
-                    Departure: {conn.departureTime}
-                    {conn.isNextDay && <span> (Next day)</span>}
-                  </p>
-                  <p>Arrival: {conn.arrivalTime}</p>
-                  <p>Delay: {conn.delay} minutes</p>
-                  <p>Platform: {conn.platform}</p>
+    <div className="connections-menu">
+    <p className="favorites-title">Favorites</p>
+    {connections.map((connection) => (
+      <div className="connection" key={`${connection.id}`}>
+        <div className="connection-header">
+          <button className="connection-toggle" onClick={() => toggleExpand(connection)}>{`${connection.from} to ${connection.to}`}</button>
+          <button className="connection-remove" onClick={() => removeConnection(connection.id)}>X</button>
+        </div>
+        {expandedConnection === connection && (
+          <div className="connection-details">
+            {connection.connections.map((conn, index) => (
+              <div className="connection-detail" key={index}>
+                <p className="connection-departure">Departure: {conn.departureTime}
+                  {conn.isNextDay && <span className="connection-next-day"> (Next day)</span>}</p>
+                <p className="connection-arrival">Arrival: {conn.arrivalTime}</p>
+                  <p className="connection-delay">Delay: {conn.delay} minutes</p>
+                  <p className="connection-platform">Platform: {conn.platform}</p>
                 </div>
               ))}
             </div>

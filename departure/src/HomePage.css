@@ -4,7 +4,7 @@
     justify-content: center;
     align-items: center;
     height: 50vh;
-    background-color: #fff;
+    background-color: hsl(0, 0%, 100%);
 }
 
 
@@ -67,10 +67,22 @@
     position: fixed;
 }
 
+.location-previews-from {
+    position: fixed;
+    margin-top: 10rem;
+}
+
+.location-previews-to {
+    position: fixed;
+    margin-top: 10rem;
+}
+
 .connections-text {
     position: fixed;
     margin-top: 10rem;
     font-size: 2rem;
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .connections-box {

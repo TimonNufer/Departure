@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import SaveConnection from './SaveConnections';
 import Button from 'react-bootstrap/Button';
+import { Typeahead } from 'react-bootstrap-typeahead';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
+
 
 const Search = () => {
   // State variables for input values, connections, and location previews
@@ -91,16 +94,9 @@ const Search = () => {
         autoComplete="off"
       />
 
-      {/* Display connections */}
-      <Button className='safe-button' onClick={saveConnection} variant="primary" type="submit">
-        Save Connection
-      </Button>
-
-      <h3 className='connections-text'>Connections:</h3>
-
       {/* Display location previews for 'from' */}
       {fromLocationPreviews.length > 0 && (
-        <ul className="location-previews">
+        <ul className="location-previews-from">
           {fromLocationPreviews.map((location) => (
             <li
               key={location.id} // Assign a unique key prop to each list item
@@ -114,7 +110,7 @@ const Search = () => {
 
       {/* Display location previews for 'to' */}
       {toLocationPreviews.length > 0 && (
-        <ul className="location-previews">
+        <ul className="location-previews-to">
           {toLocationPreviews.map((location) => (
             <li
               key={location.id} // Assign a unique key prop to each list item
@@ -125,6 +121,13 @@ const Search = () => {
           ))}
         </ul>
       )}
+
+            {/* Display connections */}
+            <Button className='safe-button' onClick={saveConnection} variant="primary" type="submit">
+        Save Connection
+      </Button>
+
+      <h3 className='connections-text'>Connections:</h3>
 
       {showComponent ? (
         <SaveConnection

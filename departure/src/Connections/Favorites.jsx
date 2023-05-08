@@ -4,6 +4,7 @@ import moment from 'moment';
 
 const ConnectionsMenu = () => {
   const [connections, setConnections] = useState([]);
+  const [expandedConnection, setExpandedConnection] = useState(null);
 
   useEffect(() => {
     const fetchConnections = async () => {
@@ -30,10 +31,16 @@ const ConnectionsMenu = () => {
             const formattedConnections = transportConnections.map((conn) => {
               const departureTime = moment.unix(conn.from.departureTimestamp).format('HH:mm');
               const arrivalTime = moment.unix(conn.to.arrivalTimestamp).format('HH:mm');
-              return { departureTime, arrivalTime };
+              const delay = conn.to.delay / 60; // Convert delay to minutes
+              const platform = conn.to.platform;
+
+              // Check if the connection spans to the next day
+              const isNextDay = moment.unix(conn.from.departureTimestamp).isAfter(moment.unix(conn.to.arrivalTimestamp), 'day');
+
+              return { departureTime, arrivalTime, delay, platform, isNextDay };
             });
 
-            return { from, to, connections: formattedConnections };
+            return { id: connection.id, from, to, connections: formattedConnections };
           })
         );
 
@@ -46,16 +53,54 @@ const ConnectionsMenu = () => {
     fetchConnections();
   }, []);
 
+  const toggleExpand = (connection) => {
+    if (expandedConnection === connection) {
+      setExpandedConnection(null);
+    } else {
+      setExpandedConnection(connection);
+    }
+  };
+
+  const removeConnection = async (connectionId) => {
+    try {
+      const token = sessionStorage.getItem('token');
+
+      await axios.delete(`http://localhost:4242/api/connections/${connectionId}`, {
+        headers: {
+          'x-access-token': token,
+        },
+      });
+
+      setConnections((prevConnections) => prevConnections.filter((conn) => conn.id !== connectionId));
+    } catch (error) {
+      console.error('Error removing connection:', error);
+    }
+  };
+
   return (
     <div>
+      <p>Favoriten</p>
       {connections.map((connection) => (
-        <div key={`${connection.from}-${connection.to}`}>
-          <button>{`${connection.from} to ${connection.to}`}</button>
-          {connection.connections.map((conn, index) => (
-            <div key={`${connection.from}-${connection.to}-${index}`}>
-              Departure: {conn.departureTime} - Arrival: {conn.arrivalTime}
+        <div key={`${connection.id}`}>
+          <div>
+            <button onClick={() => toggleExpand(connection)}>{`${connection.from} to ${connection.to}`}</button>
+            <button onClick={() => removeConnection(connection.id)}>X</button>
+          </div>
+          {expandedConnection === connection && (
+            <div>
+              {connection.connections.map((conn, index) => (
+                <div key={index}>
+                  <p>
+                    Departure: {conn.departureTime}
+                    {conn.isNextDay && <span> (Next day)</span>}
+                  </p>
+                  <p>Arrival: {conn.arrivalTime}</p>
+                  <p>Delay: {conn.delay} minutes</p>
+                  <p>Platform: {conn.platform}</p>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
         </div>
       ))}
     </div>

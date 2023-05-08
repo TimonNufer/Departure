@@ -69,12 +69,14 @@
 
 .location-previews-from {
     position: fixed;
-    margin-top: 10rem;
+    margin-top: 30rem;
+    margin-left: -26rem;
 }
 
 .location-previews-to {
     position: fixed;
-    margin-top: 10rem;
+    margin-top: 30rem;
+    margin-left: 17rem;
 }
 
 .connections-text {
